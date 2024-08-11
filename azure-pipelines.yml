@@ -41,3 +41,20 @@ steps:
     command: 'build'
     arguments: '--no-restore --configuration Release'
     projects: '**/*.csproj'
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Azure subscription 1(b8b2d6ad-a192-487d-9fb4-726da755b20a)'
+    subscriptionId: 'b8b2d6ad-a192-487d-9fb4-726da755b20a'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'NetworkWatcherRG'
+    location: 'Australia East'
+    templateLocation: 'Linked artifact'
+    csmFile: 'temp'
+    csmParametersFile: 'temppara'
+    deploymentMode: 'Incremental'
+
+- template: azure-pipelines.yml
+  parameters:
+  buildConfiguration: 'Debug'
